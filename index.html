@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Portal | ProVista Hub</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://provistahub.com/favicon.ico" sizes="any">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("p_ONzqXxZ7dHu_W7b");
+        })();
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FAF9EE;
+            color: #1f2937;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- GLOBAL COLORS --- */
+        .text-brand-green { color: #097241; }
+        .bg-brand-green { background-color: #097241; }
+        .hover-bg-brand-green:hover { background-color: #075a33; }
+        
+        /* --- SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #a2af9b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #097241; }
+
+        /* --- UTILITIES --- */
+        .hidden-view { display: none !important; }
+
+        /* --- HOME: CARD STYLING --- */
+        .intern-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #e5e7eb;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .intern-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+        }
+        .intern-card:hover::before { opacity: 1; }
+        .intern-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(9, 114, 65, 0.15);
+            border-color: #097241;
+        }
+        .intern-card .icon-box { transition: all 0.4s ease; }
+        .intern-card:hover .icon-box {
+            transform: scale(1.1) rotate(6deg);
+            background-color: #097241;
+        }
+        .intern-card:hover .icon-box i {
+            color: white !important;
+            transition: color 0.2s;
+        }
+        .action-arrow {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        .intern-card:hover .action-arrow { transform: translateX(6px); }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        .reveal-visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        /* --- ELIGIBILITY STYLES --- */
+        .form-radio:checked { background-color: #097241; border-color: #097241; }
+        .skill-checkbox:checked + div {
+            background-color: #097241; color: white; border-color: #097241;
+            box-shadow: 0 4px 6px -1px rgba(9, 114, 65, 0.3);
+        }
+        @keyframes progress { from { width: 0%; } to { width: 100%; } }
+        .animate-progress { animation: progress 2s ease-in-out forwards; }
+        .question-radio:checked + div {
+            background-color: #ecfdf5; border-color: #097241; color: #097241;
+        }
+        .question-radio:checked + div .check-icon { display: block; }
+
+        /* --- APPLY FORM STYLES --- */
+        .form-section {
+            background: white; padding: 2rem; border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem; border-left: 4px solid #A2AF9B;
+            transition: border-color 0.3s;
+        }
+        .form-section:focus-within { border-left-color: #097241; }
+        .form-input {
+            width: 100%; padding: 0.75rem 1rem; border-radius: 0.5rem;
+            border: 1px solid #e5e7eb; background-color: #f9fafb; transition: all 0.2s;
+        }
+        .form-input:focus {
+            outline: none; border-color: #097241; background-color: white;
+            box-shadow: 0 0 0 3px rgba(9, 114, 65, 0.1);
+        }
+        .form-input[readonly] {
+            background-color: #ecfdf5; border-color: #097241; color: #097241; cursor: not-allowed;
+        }
+        .file-upload-box {
+            border: 2px dashed #A2AF9B; padding: 1.5rem; text-align: center;
+            border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;
+            background-color: #FAF9EE;
+        }
+        .file-upload-box:hover { border-color: #097241; background-color: #ecfdf5; }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px);
+        }
+
+        /* --- VERIFICATION STYLES --- */
+        .loader {
+            border: 4px solid #f3f3f3; border-top: 4px solid #097241;
+            border-radius: 50%; width: 40px; height: 40px;
+            animation: spin 1s linear infinite; margin: 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1rem; border-radius: 9999px; font-weight: 600; font-size: 0.875rem;
+        }
+        .status-pending { background-color: #FEF3C7; color: #D97706; }
+        .status-verified { background-color: #D1FAE5; color: #059669; }
+    </style>
+</head>
+<body>
+
+    <!-- ================= VIEW 1: HOME (index.html) ================= -->
+    <div id="view-home" class="view-section">
+        <!-- Header -->
+        <header class="bg-[#DCCFC0] text-gray-800 sticky top-0 z-50 shadow-sm">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <a href="#" onclick="router.navigate('home')" class="text-2xl font-bold rounded-lg text-[#097241]">ProVista Hub <span class="text-xs text-gray-600 block sm:inline font-normal">| Internship Portal</span></a>
+                <div class="flex gap-4">
+                    <a href="#" onclick="router.navigate('verify')" class="flex items-center gap-2 text-gray-600 font-medium hover:text-[#097241] transition-colors text-sm">
+                        <i class="fas fa-search"></i> <span class="hidden sm:inline">Check Status</span>
+                    </a>
+                    <a href="#" onclick="router.navigate('home')" class="flex items-center gap-2 text-[#097241] font-semibold hover:text-[#075a33] transition-colors">
+                        <i class="fas fa-home"></i> <span class="hidden sm:inline">Back to Home</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-6xl flex-grow min-h-screen">
+            
+            <!-- IMPORTANT NOTE: ADDED AS REQUESTED -->
+            <div onclick="router.navigate('verify')" class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-8 cursor-pointer hover:bg-yellow-100 transition-colors rounded-r shadow-sm animate-fade-in">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-yellow-700 font-medium">
+                            Important: After submitting your application, verification is mandatory to complete the process. <span class="underline font-bold">Click here to Verify Application Status.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Section -->
+            <section class="text-center mb-12 animate-fade-in">
+                <span class="bg-green-100 text-[#097241] text-sm font-bold px-4 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">Careers & Growth</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Launch Your Career with <br><span class="text-[#097241]">Real-World Experience</span></h1>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Select your preferred domain below to start your application process. Work on live projects and get certified.
+                </p>
+            </section>
+
+            <!-- Updates Section -->
+            <section class="max-w-4xl mx-auto mb-16 animate-fade-in" style="animation-delay: 0.2s;">
+                <div class="bg-white border-l-4 border-[#097241] rounded-r-xl shadow-md p-6 flex items-start gap-4 transition-transform hover:scale-[1.01] duration-300">
+                    <div class="bg-green-50 p-3 rounded-full shrink-0 border border-green-100 hidden sm:block">
+                        <i class="fas fa-bullhorn text-[#097241] text-xl animate-pulse"></i>
+                    </div>
+                    <div class="w-full">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                                <i class="fas fa-bullhorn text-[#097241] sm:hidden"></i>
+                                Important Updates
+                            </h3>
+                            <span class="text-xs bg-[#097241] text-white px-3 py-1 rounded-full font-medium shadow-sm animate-pulse">Live</span>
+                        </div>
+                        <div class="text-gray-600 text-sm space-y-2 border-t border-gray-100 pt-3">
+                            <p class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-[#097241] mt-1"></i>
+                                <span>Application window for <strong>Summer 2025 Batch</strong> is now open. Apply before 30th March.</span>
+                            </p>
+                            <p class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-[#097241] mt-1"></i>
+                                <span>New slots opened for <strong>Content Creation</strong> & <strong>UI/UX Design</strong> roles.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Internship Domains Grid -->
+            <section id="roles" class="mb-20">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-2">
+                    <i class="fas fa-briefcase text-[#A2AF9B]"></i> Available Opportunities
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Role 1 -->
+                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('Digital Marketing & Content')">
+                        <div class="icon-box w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4 transition-colors">
+                            <i class="fas fa-bullhorn text-blue-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">Digital Marketing</h3>
+                        <p class="text-sm text-gray-500 mb-4">Master SEO, Social Media strategies, and content analytics.</p>
+                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
+                    </div>
+
+                    <!-- Role 2 -->
+                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('UI/UX & Design')">
+                        <div class="icon-box w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4 transition-colors">
+                            <i class="fas fa-pen-nib text-purple-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">UI/UX & Design</h3>
+                        <ul class="text-sm text-gray-500 mb-4 space-y-1 list-disc list-inside">
+                            <li>User Interface Design</li>
+                            <li>User Experience Research</li>
+                            <li>Graphic Design (Branding)</li>
+                        </ul>
+                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
+                    </div>
+
+                    <!-- Role 3 -->
+                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('Backend Development')">
+                        <div class="icon-box w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4 transition-colors">
+                            <i class="fas fa-server text-gray-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">Backend Development</h3>
+                        <p class="text-sm text-gray-500 mb-4">Build robust APIs and server logic using Node.js, Python, PHP, or Django.</p>
+                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
+                    </div>
+
+                    <!-- Role 4 -->
+                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('Content Creation')">
+                        <div class="icon-box w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mb-4 transition-colors">
+                            <i class="fas fa-feather-alt text-pink-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">Content Creation</h3>
+                        <p class="text-sm text-gray-500 mb-4">Write engaging blogs, scripts, and technical documentation.</p>
+                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
+                    </div>
+
+                    <!-- Role 5 -->
+                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('Marketing (BBA Focus)')">
+                        <div class="icon-box w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-4 transition-colors">
+                            <i class="fas fa-chart-line text-orange-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">Marketing (Mgmt)</h3>
+                        <p class="text-sm text-gray-500 mb-4">Ideal for BBA students. Learn market research, sales strategies, and lead gen.</p>
+                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="bg-gray-100 text-gray-800 font-sans border-t border-gray-300">
+            <div class="container mx-auto px-4 py-8 text-center">
+                <p class="text-sm text-gray-600">&copy; <span id="currentYear"></span> ProVista Hub. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ================= VIEW 2: ELIGIBILITY (eligibility.html) ================= -->
+    <div id="view-eligibility" class="view-section hidden-view">
+        <header class="bg-[#DCCFC0] text-gray-800 sticky top-0 z-50 shadow-sm">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <span class="text-2xl font-bold rounded-lg text-[#097241]">ProVista Hub <span class="text-xs text-gray-600 font-normal">| Eligibility Check</span></span>
+                <a href="#" onclick="router.navigate('home')" class="flex items-center gap-2 text-[#097241] font-semibold hover:text-[#075a33] transition-colors">
+                    <i class="fas fa-times"></i> <span class="hidden sm:inline">Cancel</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-12 max-w-2xl min-h-screen flex items-center justify-center">
+            <div class="bg-white p-8 rounded-2xl shadow-xl w-full border-t-4 border-[#097241]">
+                <div class="text-center mb-8">
+                    <!-- Profile Image Logic -->
+                    <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden border-2 border-[#097241] relative">
+                        <img src="C:\Users\manis\Downloads\image_a17fdb.jpg" 
+                             alt="Student Avatar" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.style.display='none'; document.getElementById('fallbackAvatar').classList.remove('hidden');">
+                        <div id="fallbackAvatar" class="absolute inset-0 flex items-center justify-center bg-green-50 hidden">
+                            <i class="fas fa-user-graduate text-3xl text-[#097241]"></i>
+                        </div>
+                    </div>
+                    
+                    <h1 class="text-2xl font-bold text-gray-900">Let's Check Your Eligibility</h1>
+                    <p class="text-gray-500 mt-2">Applying for: <span id="roleNameDisplay" class="font-bold text-[#097241] text-lg">Loading...</span></p>
+                    <p class="text-xs text-gray-400 mt-1">Answer honestly. Our AI verifies criteria in real-time.</p>
+                </div>
+
+                <form id="eligibilityForm" onsubmit="runEligibilityCheck(event)">
+                    <!-- Question 1 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">1. Which year/semester are you currently in?</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer"><input type="radio" name="year" value="1" class="peer sr-only" required><div class="p-3 text-center border rounded-lg peer-checked:border-[#097241] peer-checked:bg-green-50 peer-checked:text-[#097241] transition-all hover:bg-gray-50">1st Year</div></label>
+                            <label class="cursor-pointer"><input type="radio" name="year" value="2" class="peer sr-only"><div class="p-3 text-center border rounded-lg peer-checked:border-[#097241] peer-checked:bg-green-50 peer-checked:text-[#097241] transition-all hover:bg-gray-50">2nd Year</div></label>
+                            <label class="cursor-pointer"><input type="radio" name="year" value="3" class="peer sr-only"><div class="p-3 text-center border rounded-lg peer-checked:border-[#097241] peer-checked:bg-green-50 peer-checked:text-[#097241] transition-all hover:bg-gray-50">3rd Year</div></label>
+                            <label class="cursor-pointer"><input type="radio" name="year" value="4" class="peer sr-only"><div class="p-3 text-center border rounded-lg peer-checked:border-[#097241] peer-checked:bg-green-50 peer-checked:text-[#097241] transition-all hover:bg-gray-50">4th Year / Graduated</div></label>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">2. What represents your background best?</label>
+                        <select id="courseSelect" name="course" required class="w-full p-3 border rounded-lg focus:outline-none focus:border-[#097241] bg-white">
+                            <option value="" disabled selected>Select Your Stream</option>
+                            <option value="tech">Tech (B.Tech/BCA/MCA/B.Sc IT)</option>
+                            <option value="management">Management (BBA/MBA)</option>
+                            <option value="design">Arts & Design</option>
+                            <option value="other">Other Backgrounds</option>
+                        </select>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">3. Select the skills/tools you are familiar with:</label>
+                        <div id="skillsContainer" class="flex flex-wrap gap-3">
+                            <span class="text-sm text-gray-400 italic">Loading specific skills for this role...</span>
+                        </div>
+                        <p id="skillError" class="text-xs text-red-500 mt-2 hidden"><i class="fas fa-exclamation-circle"></i> Please select at least one skill.</p>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="mb-8 border-t border-gray-100 pt-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">4. Technical Assessment (Self-Declaration)</label>
+                        <div id="questionsContainer" class="space-y-4">
+                            <span class="text-sm text-gray-400 italic">Loading assessment questions...</span>
+                        </div>
+                        <p id="questionError" class="text-xs text-red-500 mt-2 hidden"><i class="fas fa-exclamation-circle"></i> Please answer all questions.</p>
+                    </div>
+
+                    <button type="submit" id="checkBtn" class="w-full bg-[#097241] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-[#075a33] transition-all transform hover:scale-[1.02]">
+                        Check My Eligibility
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <!-- Analysis Modal -->
+        <div id="analysisModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
+                <div id="processingView">
+                    <div class="mb-4"><i class="fas fa-microchip text-4xl text-[#097241] animate-pulse"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Analyzing Profile...</h3>
+                    <p class="text-gray-500 text-sm mb-4">Matching your skills with our requirements.</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+                        <div class="bg-[#097241] h-2.5 rounded-full animate-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div id="successView" class="hidden">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce"><i class="fas fa-check text-3xl text-[#097241]"></i></div>
+                    <h3 class="text-2xl font-bold text-[#097241] mb-2">You are Eligible!</h3>
+                    <p class="text-gray-600 text-sm mb-6">Your profile matches our criteria perfectly.</p>
+                    <button onclick="proceedToForm()" class="w-full bg-[#097241] text-white py-3 rounded-lg font-bold hover:bg-[#075a33] transition-colors">Continue to Application</button>
+                </div>
+
+                <div id="failView" class="hidden">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-times text-3xl text-red-600"></i></div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Not Eligible Yet</h3>
+                    <p id="failReason" class="text-red-500 text-sm font-medium mb-6">Criteria not met.</p>
+                    <button onclick="router.navigate('home')" class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-bold hover:bg-gray-300">Back to Listings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VIEW 3: APPLY (apply.html) ================= -->
+    <div id="view-apply" class="view-section hidden-view">
+        <header class="bg-[#DCCFC0] text-gray-800 sticky top-0 z-50 shadow-sm">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <span class="text-2xl font-bold rounded-lg text-[#097241] cursor-pointer">ProVista Hub <span class="text-xs text-gray-600 font-normal">| Apply</span></span>
+                <button onclick="router.navigate('home')" class="flex items-center gap-2 text-[#097241] font-semibold hover:text-[#075a33] transition-colors focus:outline-none">
+                    <i class="fas fa-arrow-left"></i> <span class="hidden sm:inline">Back to Listings</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-900">Internship Application Form</h2>
+                <p class="text-gray-500 mt-2">Apply for <span id="selectedRoleDisplay" class="font-bold text-[#097241]">your preferred role</span></p>
+            </div>
+
+            <!-- IMPORTANT NOTE: ADDED AS REQUESTED ON APPLY PAGE TOO -->
+            <div onclick="router.navigate('verify')" class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-8 cursor-pointer hover:bg-yellow-100 transition-colors rounded-r shadow-sm animate-fade-in">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-yellow-700 font-medium">
+                            Important: After submitting your application, verification is mandatory to complete the process. <span class="underline font-bold">Click here to Verify Application Status.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <form id="internshipForm" onsubmit="handleFormSubmit(event)">
+                <!-- 1. Personal Details -->
+                <div class="form-section">
+                    <h3 class="text-xl font-bold text-[#097241] mb-6 flex items-center gap-2"><i class="fas fa-user-circle"></i> 1. Personal Details</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+                            <input type="text" name="fullName" required class="form-input" placeholder="e.g., Rahul Sharma">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth <span class="text-red-500">*</span></label>
+                            <input type="date" name="dob" required class="form-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Gender <span class="text-red-500">*</span></label>
+                            <select name="gender" required class="form-input">
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number (WhatsApp) <span class="text-red-500">*</span></label>
+                            <div class="flex items-center gap-2">
+                                <div class="relative w-full">
+                                    <input type="tel" id="phoneInput" name="contact" pattern="[0-9]{10}" required class="form-input w-full" placeholder="10 digit mobile number">
+                                    <i id="verifiedIcon" class="fas fa-check-circle text-[#097241] absolute right-3 top-3.5 hidden text-lg"></i>
+                                </div>
+                                <button type="button" id="sendOtpBtn" onclick="initiateOTPProcess()" class="bg-gray-800 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors whitespace-nowrap shadow-sm h-full w-24">Get OTP</button>
+                            </div>
+                            <div id="otpPanel" class="hidden mt-3 bg-gray-50 border border-gray-200 rounded-lg p-4 animate-fade-in relative">
+                                <div class="absolute -top-2 left-4 w-3 h-3 bg-gray-50 border-t border-l border-gray-200 transform rotate-45"></div>
+                                <p class="text-xs text-gray-500 mb-2 font-medium">OTP sent to your mobile. Enter below:</p>
+                                <div class="flex gap-2 items-center">
+                                    <input type="text" id="otpInput" maxlength="4" class="form-input text-center font-bold tracking-[0.5em] w-32 bg-white border-gray-300" placeholder="••••">
+                                    <button type="button" onclick="verifyGeneratedOTP()" class="bg-[#097241] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#075a33] transition-colors shadow-sm">Verify</button>
+                                </div>
+                                <div class="flex justify-between items-center mt-3">
+                                    <span id="otpTimer" class="text-xs text-red-500 font-medium">Expires in 30s</span>
+                                    <button type="button" id="resendBtn" onclick="initiateOTPProcess()" disabled class="text-xs text-gray-400 font-medium hover:text-[#097241] disabled:opacity-50 disabled:cursor-not-allowed">Resend OTP</button>
+                                </div>
+                            </div>
+                            <p id="verifiedMsg" class="hidden text-xs text-[#097241] font-bold mt-2 flex items-center gap-1"><i class="fas fa-shield-alt"></i> Number Verified Successfully</p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address <span class="text-red-500">*</span></label>
+                            <input type="email" name="email" required class="form-input" placeholder="youremail@example.com">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Current Address <span class="text-red-500">*</span></label>
+                            <textarea name="address" rows="3" required class="form-input" placeholder="Hostel/PG or Home Address"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Educational Info -->
+                <div class="form-section">
+                    <h3 class="text-xl font-bold text-[#097241] mb-6 flex items-center gap-2"><i class="fas fa-graduation-cap"></i> 2. Educational Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">College/University Name <span class="text-red-500">*</span></label>
+                            <input type="text" name="college" required class="form-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Course/Program <span class="text-red-500">*</span></label>
+                            <select name="course" required class="form-input">
+                                <option value="" disabled selected>Select Course</option>
+                                <option value="B.Tech CSE/IT">B.Tech CSE/IT</option>
+                                <option value="B.Tech ECE">B.Tech ECE</option>
+                                <option value="BCA/MCA">BCA / MCA</option>
+                                <option value="BBA/MBA">BBA / MBA</option>
+                                <option value="B.Sc/M.Sc">B.Sc / M.Sc</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Current Year/Semester <span class="text-red-500">*</span></label>
+                            <input type="text" name="year" required class="form-input" placeholder="e.g., 3rd Year / 5th Sem">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Expected Graduation Year <span class="text-red-500">*</span></label>
+                            <input type="number" name="gradYear" min="2024" max="2030" required class="form-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Enrollment/Reg No. (Optional)</label>
+                            <input type="text" name="enrollment" class="form-input" placeholder="For verification purposes">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Skills -->
+                <div class="form-section">
+                    <h3 class="text-xl font-bold text-[#097241] mb-6 flex items-center gap-2"><i class="fas fa-laptop-code"></i> 3. Skills & Performance</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Latest CGPA / Percentage <span class="text-red-500">*</span></label>
+                            <input type="text" name="cgpa" required class="form-input" placeholder="e.g., 8.5 CGPA">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Technical Skills <span class="text-red-500">*</span></label>
+                            <input type="text" name="techSkills" required class="form-input" placeholder="e.g., Python, Figma, SEO">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Resume / CV Upload (PDF/Doc) <span class="text-xs text-red-500 ml-1">(Max 300KB)</span> <span class="text-red-500">*</span></label>
+                            <div class="file-upload-box relative">
+                                <input type="file" name="resume" accept=".pdf,.doc,.docx" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="updateFileName(this, 'resume-name')">
+                                <div class="text-gray-500">
+                                    <i class="fas fa-cloud-upload-alt text-3xl mb-2 text-[#A2AF9B]"></i>
+                                    <p class="text-sm font-medium">Click or Drag to Upload Resume</p>
+                                    <p id="resume-name" class="text-xs text-[#097241] mt-2 font-bold"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Preferences -->
+                <div class="form-section">
+                    <h3 class="text-xl font-bold text-[#097241] mb-6 flex items-center gap-2"><i class="fas fa-sliders-h"></i> 4. Internship Preferences</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Internship Domain <span class="text-red-500">*</span></label>
+                            <select id="domainSelect" name="domain" required class="form-input">
+                                <option value="" disabled selected>Select Domain</option>
+                                <option value="Digital Marketing & Content">Digital Marketing & Content</option>
+                                <option value="UI/UX & Design">UI/UX & Design</option>
+                                <option value="Backend Development">Backend Development (Node/Python/PHP)</option>
+                                <option value="Content Creation">Content Creation</option>
+                                <option value="Marketing (BBA Focus)">Marketing (BBA Focus)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Mode <span class="text-red-500">*</span></label>
+                            <select name="mode" required class="form-input">
+                                <option value="Remote">Remote (Work from Home)</option>
+                                <option value="Hybrid">Hybrid</option>
+                                <option value="On-site">On-site (Hyderabad)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Availability Start Date <span class="text-red-500">*</span></label>
+                            <input type="date" name="startDate" required class="form-input">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Portfolio / LinkedIn Profile (URL)</label>
+                            <input type="url" name="portfolio" class="form-input" placeholder="https://linkedin.com/in/yourprofile">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Verification -->
+                <div class="form-section">
+                    <h3 class="text-xl font-bold text-[#097241] mb-6 flex items-center gap-2"><i class="fas fa-shield-alt"></i> 5. Verification & Consent</h3>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">College ID Card (Photo/PDF) <span class="text-xs text-red-500 ml-1">(Max 300KB)</span> <span class="text-red-500">*</span></label>
+                        <div class="file-upload-box relative">
+                            <input type="file" name="idCard" accept="image/*,.pdf" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="updateFileName(this, 'id-name')">
+                            <div class="text-gray-500">
+                                <i class="fas fa-id-card text-3xl mb-2 text-[#A2AF9B]"></i>
+                                <p class="text-sm font-medium">Upload College ID</p>
+                                <p id="id-name" class="text-xs text-[#097241] mt-2 font-bold"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" required class="mt-1 w-5 h-5 text-[#097241] rounded border-gray-300 focus:ring-[#097241]">
+                            <span class="text-sm text-gray-600">I confirm that the information provided is true to the best of my knowledge.</span>
+                        </label>
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" required class="mt-1 w-5 h-5 text-[#097241] rounded border-gray-300 focus:ring-[#097241]">
+                            <span class="text-sm text-gray-600">I agree to abide by the internship terms & conditions of ProVista Hub.</span>
+                        </label>
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" checked class="mt-1 w-5 h-5 text-[#097241] rounded border-gray-300 focus:ring-[#097241]">
+                            <span class="text-sm text-gray-600">I consent to receiving updates about my application via Email/WhatsApp.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" id="submitBtn" class="bg-[#097241] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#075a33] shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 w-full md:w-auto flex items-center justify-center gap-2 mx-auto">
+                        <span>Submit Application</span>
+                        <i class="fas fa-paper-plane"></i>
+                        <div id="loadingSpinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </button>
+                </div>
+            </form>
+        </main>
+
+        <footer class="bg-gray-100 text-gray-800 font-sans border-t border-gray-300 mt-12">
+            <div class="container mx-auto px-4 py-8 text-center">
+                <p class="text-sm text-gray-600 ">&copy; 2025 ProVista Hub. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="fixed inset-0 z-[100] hidden items-center justify-center modal-overlay">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 text-center transform transition-all scale-100">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-check-circle text-5xl text-[#097241]"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Application Received!</h2>
+                <p class="text-gray-600 mb-6">Your application has been submitted successfully.</p>
+                <div class="bg-gray-50 border border-dashed border-gray-300 p-4 rounded-lg mb-6">
+                    <p class="text-xs text-gray-500 uppercase tracking-wide font-semibold">Your Application ID</p>
+                    <p id="generatedAppId" class="text-xl font-mono font-bold text-[#097241] mt-1">LOADING...</p>
+                </div>
+                <button onclick="router.navigate('home')" class="w-full bg-[#A2AF9B] text-white py-3 rounded-lg font-bold hover:bg-[#097241] transition-colors">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VIEW 4: VERIFY (verification.html) ================= -->
+    <div id="view-verify" class="view-section hidden-view">
+        <header class="bg-[#DCCFC0] text-gray-800 sticky top-0 z-50 shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <a href="#" onclick="router.navigate('home')" class="text-2xl font-bold text-[#097241]">ProVista Hub</a>
+                <a href="#" onclick="router.navigate('home')" class="text-[#097241] font-semibold hover:underline">Go Home</a>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-12 max-w-2xl min-h-screen flex items-center justify-center">
+            
+            <!-- Manual ID Input (Simulating URL parameter) -->
+            <div id="manualInputState" class="w-full bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Check Application Status</h2>
+                <input type="text" id="manualAppId" placeholder="Enter Application ID (e.g., PVH-INT-2025-XXXXX)" class="w-full p-3 border rounded-lg mb-4 text-center font-mono">
+                <button onclick="fetchApplicationDetails()" class="bg-[#097241] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#075a33]">Track Application</button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="text-center w-full hidden">
+                <div class="loader"></div>
+                <p class="text-gray-500">Fetching Application Details...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="hidden text-center w-full bg-white p-8 rounded-2xl shadow-lg border-t-4 border-red-500">
+                <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Application Not Found</h2>
+                <p class="text-gray-600 mb-6">The ID entered is invalid or does not exist.</p>
+                <button onclick="resetVerificationView()" class="inline-block bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700">Try Again</button>
+            </div>
+
+            <!-- Success/Data State -->
+            <div id="dataState" class="hidden w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                <div class="bg-[#097241] p-6 text-white text-center">
+                    <i class="fas fa-file-alt text-4xl mb-3 opacity-90"></i>
+                    <h2 class="text-2xl font-bold">Application Summary</h2>
+                    <p class="text-green-100 text-sm mt-1">ID: <span id="displayAppId" class="font-mono font-bold">...</span></p>
+                </div>
+
+                <div class="p-8">
+                    <div class="text-center mb-8">
+                        <span id="statusBadge" class="status-badge status-pending">
+                            <i class="fas fa-clock"></i> Verification Pending
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4 mb-8">
+                        <div><p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Full Name</p><p id="studentName" class="text-lg font-medium text-gray-900">-</p></div>
+                        <div><p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Email</p><p id="studentEmail" class="text-lg font-medium text-gray-900">-</p></div>
+                        <div><p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Applied Domain</p><p id="studentDomain" class="text-lg font-medium text-[#097241]">-</p></div>
+                        <div><p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Date Applied</p><p id="studentDate" class="text-lg font-medium text-gray-900">-</p></div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button id="verifyBtn" onclick="confirmVerification()" class="w-full bg-[#097241] text-white py-3 rounded-xl font-bold text-lg hover:bg-[#075a33] transition-all transform hover:scale-[1.01] shadow-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-check-circle"></i> Verify My Application
+                        </button>
+                        <button onclick="requestEdit()" class="w-full bg-white text-gray-600 border border-gray-300 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-edit"></i> Request Correction
+                        </button>
+                    </div>
+
+                    <div id="successMsg" class="hidden mt-6 bg-green-50 text-green-800 p-4 rounded-lg text-center border border-green-200">
+                        <p class="font-bold"><i class="fas fa-shield-alt"></i> Verified Successfully!</p>
+                        <p class="text-sm">Your application is now confirmed for review.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= LOGIC & FIREBASE INTEGRATION ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // --- FIREBASE CONFIG ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQYTX7waM7XxHzWUetiayrQpRHoKTakDc",
+            authDomain: "internship-data-collection.firebaseapp.com",
+            projectId: "internship-data-collection",
+            storageBucket: "internship-data-collection.firebasestorage.app",
+            messagingSenderId: "527531758572",
+            appId: "1:527531758572:web:12d85ee20d9c28c7f5a6c9"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- GLOBAL STATE & NAVIGATION ---
+        window.appState = {
+            currentRole: '',
+            currentDocId: null
+        };
+
+        window.router = {
+            navigate: function(viewId) {
+                // Hide all views
+                document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden-view'));
+                
+                // Show target view
+                const target = document.getElementById('view-' + viewId);
+                if(target) target.classList.remove('hidden-view');
+                
+                // Scroll to top
+                window.scrollTo(0,0);
+
+                // Specific Initializations
+                if(viewId === 'eligibility') initEligibilityView();
+                if(viewId === 'apply') initApplyView();
+                if(viewId === 'verify') resetVerificationView();
+            }
+        };
+
+        // --- HOME PAGE LOGIC ---
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Start Process -> Moves to Eligibility
+        window.startProcess = function(roleName) {
+            window.appState.currentRole = roleName;
+            window.router.navigate('eligibility');
+        }
+
+        // Observer for Home Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('reveal-visible');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            const cards = document.querySelectorAll('.intern-card');
+            cards.forEach(card => observer.observe(card));
+        });
+
+        // --- ELIGIBILITY LOGIC ---
+        const roleConfig = {
+            'Digital Marketing & Content': {
+                minYear: 1, allowedStreams: ['tech', 'management', 'design', 'other'],
+                skills: ['Social Media Marketing', 'SEO (Search Engine Optimization)', 'Google Ads', 'Content Strategy', 'Google Analytics', 'Email Marketing', 'Copywriting'],
+                minSkillsRequired: 1,
+                questions: [ "Does the student have basic knowledge of SEO and SEM?", "Has the student ever managed social media campaigns?", "Does the student have experience in content writing?" ]
+            },
+            'UI/UX & Design': {
+                minYear: 2, allowedStreams: ['tech', 'design', 'other'],
+                skills: ['Figma', 'Adobe XD', 'Sketch', 'Wireframing', 'User Research', 'Prototyping', 'Usability Testing', 'Graphic Design (Branding)', 'Social Media Creatives'],
+                minSkillsRequired: 2,
+                questions: [ "Does the student know how to use tools like Figma/Adobe XD?", "Has the student ever created wireframes or prototypes?", "Does the student understand the design thinking process?" ]
+            },
+            'Backend Development': {
+                minYear: 2, allowedStreams: ['tech'],
+                skills: ['Node.js', 'Python', 'Django', 'PHP', 'SQL / Database Mgmt', 'API Development', 'Server Management', 'Git/GitHub'],
+                minSkillsRequired: 2,
+                questions: [ "Can the student code in Python/Java/Node.js?", "Has the student worked with databases like MySQL/MongoDB?", "Does the student understand API development and integration?" ]
+            },
+            'Content Creation': {
+                minYear: 1, allowedStreams: ['tech', 'management', 'design', 'other'],
+                skills: ['Creative Writing', 'Video Scripting', 'Research Skills', 'Storytelling', 'Proofreading', 'Blogging', 'Technical Writing'],
+                minSkillsRequired: 1,
+                questions: [ "Does the student have experience with video editing tools (Premiere Pro, Final Cut, etc.)?", "Has the student ever created content for YouTube/Instagram?", "Does the student have storytelling and creativity skills?" ]
+            },
+            'Marketing (BBA Focus)': {
+                minYear: 1, allowedStreams: ['management', 'other'],
+                skills: ['Market Research', 'Sales Strategy', 'Consumer Behavior', 'Lead Generation', 'Public Speaking', 'Business Communication', 'Brand Management'],
+                minSkillsRequired: 1,
+                questions: [ "Does the student know how to conduct market research?", "Does the student have experience in creating a sales pitch?", "Has the student ever participated in customer engagement campaigns?" ]
+            }
+        };
+
+        function initEligibilityView() {
+            const role = window.appState.currentRole;
+            if(!role || !roleConfig[role]) { alert("No Role Selected"); window.router.navigate('home'); return; }
+            
+            document.getElementById('roleNameDisplay').innerText = role;
+            
+            // Render Skills
+            const skillContainer = document.getElementById('skillsContainer');
+            skillContainer.innerHTML = '';
+            roleConfig[role].skills.forEach(skill => {
+                skillContainer.innerHTML += `
+                    <label class="cursor-pointer">
+                        <input type="checkbox" name="skills" value="${skill}" class="skill-checkbox sr-only">
+                        <div class="px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-gray-100 transition-all select-none">${skill}</div>
+                    </label>`;
+            });
+
+            // Render Questions
+            const qContainer = document.getElementById('questionsContainer');
+            qContainer.innerHTML = '';
+            roleConfig[role].questions.forEach((q, i) => {
+                qContainer.innerHTML += `
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <p class="text-sm font-medium text-gray-800 mb-3">Q${i + 1}. ${q}</p>
+                        <div class="flex gap-4">
+                            <label class="cursor-pointer flex-1"><input type="radio" name="q${i}" value="yes" class="question-radio sr-only" required><div class="py-2 px-4 border rounded text-center text-sm font-medium hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"><i class="fas fa-check-circle check-icon hidden"></i> Yes</div></label>
+                            <label class="cursor-pointer flex-1"><input type="radio" name="q${i}" value="no" class="question-radio sr-only" required><div class="py-2 px-4 border rounded text-center text-sm font-medium hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"><i class="fas fa-times-circle check-icon hidden"></i> No</div></label>
+                        </div>
+                    </div>`;
+            });
+            
+            // Reset Modal
+            document.getElementById('analysisModal').classList.add('hidden');
+            document.getElementById('analysisModal').classList.remove('flex');
+            document.getElementById('processingView').classList.remove('hidden');
+            document.getElementById('successView').classList.add('hidden');
+            document.getElementById('failView').classList.add('hidden');
+        }
+
+        window.runEligibilityCheck = function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const userYear = parseInt(formData.get('year'));
+            const userStream = formData.get('course');
+            const userSkills = formData.getAll('skills');
+            const role = window.appState.currentRole;
+            const config = roleConfig[role];
+            
+            const answers = [];
+            for(let i=0; i<config.questions.length; i++) answers.push(formData.get(`q${i}`));
+
+            if(userSkills.length === 0) { document.getElementById('skillError').classList.remove('hidden'); return; }
+            document.getElementById('skillError').classList.add('hidden');
+            
+            if(answers.includes(null)) { document.getElementById('questionError').classList.remove('hidden'); return; }
+            document.getElementById('questionError').classList.add('hidden');
+
+            const modal = document.getElementById('analysisModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            setTimeout(() => {
+                let isEligible = true;
+                let failureReason = "";
+
+                if(userYear < config.minYear) { isEligible = false; failureReason = `Requires at least Year ${config.minYear}.`; }
+                if(isEligible && !config.allowedStreams.includes(userStream)) { isEligible = false; failureReason = "Academic background mismatch."; }
+                if(isEligible && userSkills.length < config.minSkillsRequired) { isEligible = false; failureReason = `Need at least ${config.minSkillsRequired} relevant skills.`; }
+                if(isEligible && answers.filter(a => a === 'yes').length < 2) { isEligible = false; failureReason = "Assessment score too low."; }
+
+                document.getElementById('processingView').classList.add('hidden');
+                if(isEligible) document.getElementById('successView').classList.remove('hidden');
+                else {
+                    document.getElementById('failView').classList.remove('hidden');
+                    document.getElementById('failReason').innerText = failureReason;
+                }
+            }, 2000);
+        }
+
+        window.proceedToForm = function() {
+            window.router.navigate('apply');
+        }
+
+        // --- APPLY LOGIC ---
+        function initApplyView() {
+            const role = window.appState.currentRole;
+            const domainSelect = document.getElementById('domainSelect');
+            if(domainSelect) {
+                domainSelect.value = role;
+                domainSelect.classList.add('ring-2', 'ring-[#097241]');
+            }
+            document.getElementById('selectedRoleDisplay').innerText = role;
+        }
+
+        window.isPhoneVerified = false;
+        let generatedOTP = null;
+        let timerInterval = null;
+
+        window.updateFileName = function(input, displayId) {
+            const display = document.getElementById(displayId);
+            if (input.files && input.files.length > 0) {
+                const fileSize = (input.files[0].size / 1024).toFixed(2);
+                if (fileSize > 300) { alert("File > 300KB!"); input.value = ""; display.innerText = ""; return; }
+                display.innerText = `Selected: ${input.files[0].name} (${fileSize} KB)`;
+                display.parentElement.parentElement.classList.add('border-[#097241]', 'bg-green-50');
+            } else { display.innerText = ""; }
+        }
+
+        window.initiateOTPProcess = function() {
+            const phoneInput = document.getElementById('phoneInput');
+            if (!/^\d{10}$/.test(phoneInput.value)) { alert("Enter valid 10-digit number."); phoneInput.focus(); return; }
+            
+            const btn = document.getElementById('sendOtpBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
+            
+            generatedOTP = Math.floor(1000 + Math.random() * 9000);
+            setTimeout(() => {
+                alert(`ProVista Hub SMS:\nYour Verification OTP is: ${generatedOTP}`);
+                document.getElementById('otpPanel').classList.remove('hidden');
+                btn.classList.add('hidden');
+                document.getElementById('otpInput').value = '';
+                startResendTimer();
+            }, 1500);
+        }
+
+        function startResendTimer() {
+            let timeLeft = 30;
+            const timerDisplay = document.getElementById('otpTimer');
+            const resendBtn = document.getElementById('resendBtn');
+            clearInterval(timerInterval);
+            resendBtn.disabled = true;
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval); timerDisplay.innerText = "Code Expired";
+                    resendBtn.disabled = false; generatedOTP = null;
+                } else { timerDisplay.innerText = `Resend in ${timeLeft}s`; timeLeft--; }
+            }, 1000);
+        }
+
+        window.verifyGeneratedOTP = function() {
+            const userEnteredOTP = document.getElementById('otpInput').value;
+            if (!generatedOTP) { alert("OTP Expired!"); return; }
+            if (parseInt(userEnteredOTP) === generatedOTP) {
+                window.isPhoneVerified = true;
+                clearInterval(timerInterval);
+                document.getElementById('otpPanel').classList.add('hidden');
+                document.getElementById('verifiedMsg').classList.remove('hidden');
+                document.getElementById('verifiedIcon').classList.remove('hidden');
+                document.getElementById('phoneInput').readOnly = true;
+            } else { alert("Incorrect OTP!"); }
+        }
+
+        window.generateAppId = function() {
+            return `PVH-INT-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
+        }
+
+        const fileToBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        };
+
+        window.handleFormSubmit = async function(e) {
+            e.preventDefault();
+            if (!window.isPhoneVerified) { alert("Please verify Phone Number first."); return; }
+
+            const btn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('loadingSpinner');
+            
+            btn.disabled = true;
+            btn.querySelector('span').innerText = "Processing Files...";
+            btn.querySelector('i').classList.add('hidden');
+            spinner.classList.remove('hidden');
+
+            try {
+                const formData = new FormData(document.getElementById('internshipForm'));
+                const newAppId = window.generateAppId();
+
+                const resumeFile = formData.get('resume');
+                const idCardFile = formData.get('idCard');
+                let resumeBase64 = "No File", idCardBase64 = "No File";
+
+                if (resumeFile && resumeFile.size > 0) resumeBase64 = await fileToBase64(resumeFile);
+                if (idCardFile && idCardFile.size > 0) idCardBase64 = await fileToBase64(idCardFile);
+
+                btn.querySelector('span').innerText = "Saving Application...";
+
+                const studentData = {
+                    appId: newAppId,
+                    fullName: formData.get('fullName'),
+                    dob: formData.get('dob'),
+                    gender: formData.get('gender'),
+                    contact: formData.get('contact'),
+                    email: formData.get('email'),
+                    address: formData.get('address'),
+                    college: formData.get('college'),
+                    course: formData.get('course'),
+                    year: formData.get('year'),
+                    gradYear: formData.get('gradYear'),
+                    enrollment: formData.get('enrollment'),
+                    cgpa: formData.get('cgpa'),
+                    techSkills: formData.get('techSkills'),
+                    domain: formData.get('domain'),
+                    mode: formData.get('mode'),
+                    startDate: formData.get('startDate'),
+                    portfolio: formData.get('portfolio'),
+                    resumeFile: resumeBase64,
+                    idCardFile: idCardBase64,
+                    resumeName: resumeFile ? resumeFile.name : "",
+                    submittedAt: serverTimestamp()
+                };
+
+                await addDoc(collection(db, "applications"), studentData);
+
+                // EmailJS
+                try {
+                    btn.querySelector('span').innerText = "Sending Email...";
+                    await emailjs.send("service_5d0gqpj", "template_oj32n7g", {
+                        app_id: newAppId,
+                        to_name: formData.get('fullName'),
+                        to_email: formData.get('email'),
+                        domain: formData.get('domain'),
+                        college: formData.get('college')
+                    });
+                } catch(err) { console.error("Email failed", err); }
+
+                document.getElementById('generatedAppId').innerText = newAppId;
+                document.getElementById('successModal').classList.remove('hidden');
+                document.getElementById('successModal').classList.add('flex');
+                
+                // Reset form
+                document.getElementById('internshipForm').reset();
+                window.isPhoneVerified = false;
+                document.getElementById('verifiedMsg').classList.add('hidden');
+                document.getElementById('phoneInput').readOnly = false;
+
+            } catch (error) {
+                alert("Error: " + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.querySelector('span').innerText = "Submit Application";
+                btn.querySelector('i').classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        };
+
+        // --- VERIFICATION LOGIC ---
+        window.resetVerificationView = function() {
+            document.getElementById('manualInputState').classList.remove('hidden');
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('errorState').classList.add('hidden');
+            document.getElementById('dataState').classList.add('hidden');
+            document.getElementById('manualAppId').value = '';
+            window.appState.currentDocId = null;
+        }
+
+        window.fetchApplicationDetails = async function() {
+            const appId = document.getElementById('manualAppId').value.trim();
+            if(!appId) { alert("Please enter an App ID"); return; }
+
+            document.getElementById('manualInputState').classList.add('hidden');
+            document.getElementById('loadingState').classList.remove('hidden');
+
+            try {
+                const q = query(collection(db, "applications"), where("appId", "==", appId));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    document.getElementById('loadingState').classList.add('hidden');
+                    document.getElementById('errorState').classList.remove('hidden');
+                } else {
+                    const docSnap = querySnapshot.docs[0];
+                    const data = docSnap.data();
+                    window.appState.currentDocId = docSnap.id;
+
+                    document.getElementById('displayAppId').innerText = data.appId;
+                    document.getElementById('studentName').innerText = data.fullName;
+                    document.getElementById('studentEmail').innerText = data.email;
+                    document.getElementById('studentDomain').innerText = data.domain;
+                    if(data.submittedAt) {
+                        const date = data.submittedAt.toDate ? data.submittedAt.toDate() : new Date(data.submittedAt);
+                        document.getElementById('studentDate').innerText = date.toLocaleDateString();
+                    }
+
+                    if(data.isVerifiedByStudent) showVerifiedState();
+                    else {
+                        document.getElementById('statusBadge').className = "status-badge status-pending";
+                        document.getElementById('statusBadge').innerHTML = '<i class="fas fa-clock"></i> Verification Pending';
+                        document.getElementById('verifyBtn').classList.remove('hidden');
+                        document.getElementById('successMsg').classList.add('hidden');
+                    }
+
+                    document.getElementById('loadingState').classList.add('hidden');
+                    document.getElementById('dataState').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('errorState').classList.remove('hidden');
+            }
+        }
+
+        window.confirmVerification = async function() {
+            if(!window.appState.currentDocId) return;
+            const btn = document.getElementById('verifyBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+            btn.disabled = true;
+
+            try {
+                const docRef = doc(db, "applications", window.appState.currentDocId);
+                await updateDoc(docRef, { isVerifiedByStudent: true, verifiedAt: new Date() });
+                showVerifiedState();
+            } catch (error) {
+                alert("Failed: " + error.message);
+                btn.innerHTML = 'Try Again'; btn.disabled = false;
+            }
+        }
+
+        window.requestEdit = function() {
+            alert("To make changes, please contact HR at hr@provistahub.com with your Application ID.\n\nSubmitting a new form will create a duplicate entry.");
+        }
+
+        function showVerifiedState() {
+            const badge = document.getElementById('statusBadge');
+            badge.className = "status-badge status-verified";
+            badge.innerHTML = '<i class="fas fa-check-circle"></i> Verified';
+            document.getElementById('verifyBtn').classList.add('hidden');
+            document.getElementById('successMsg').classList.remove('hidden');
+        }
+
+    </script>
+</body>
+</html>
