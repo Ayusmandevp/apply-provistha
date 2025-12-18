@@ -239,61 +239,7 @@
                     <i class="fas fa-briefcase text-[#A2AF9B]"></i> Available Opportunities
                 </h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Role 1 -->
-                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('Digital Marketing & Content')">
-                        <div class="icon-box w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4 transition-colors">
-                            <i class="fas fa-bullhorn text-blue-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">Digital Marketing</h3>
-                        <p class="text-sm text-gray-500 mb-4">Master SEO, Social Media strategies, and content analytics.</p>
-                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
-                    </div>
-
-                    <!-- Role 2 -->
-                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('UI/UX & Design')">
-                        <div class="icon-box w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4 transition-colors">
-                            <i class="fas fa-pen-nib text-purple-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">UI/UX & Design</h3>
-                        <ul class="text-sm text-gray-500 mb-4 space-y-1 list-disc list-inside">
-                            <li>User Interface Design</li>
-                            <li>User Experience Research</li>
-                            <li>Graphic Design (Branding)</li>
-                        </ul>
-                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
-                    </div>
-
-                    <!-- Role 3 -->
-                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('Backend Development')">
-                        <div class="icon-box w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4 transition-colors">
-                            <i class="fas fa-server text-gray-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">Backend Development</h3>
-                        <p class="text-sm text-gray-500 mb-4">Build robust APIs and server logic using Node.js, Python, PHP, or Django.</p>
-                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
-                    </div>
-
-                    <!-- Role 4 -->
-                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('Content Creation')">
-                        <div class="icon-box w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mb-4 transition-colors">
-                            <i class="fas fa-feather-alt text-pink-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">Content Creation</h3>
-                        <p class="text-sm text-gray-500 mb-4">Write engaging blogs, scripts, and technical documentation.</p>
-                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
-                    </div>
-
-                    <!-- Role 5 -->
-                    <div class="intern-card p-6 rounded-2xl cursor-pointer group" onclick="startProcess('Marketing (BBA Focus)')">
-                        <div class="icon-box w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-4 transition-colors">
-                            <i class="fas fa-chart-line text-orange-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">Marketing (Mgmt)</h3>
-                        <p class="text-sm text-gray-500 mb-4">Ideal for BBA students. Learn market research, sales strategies, and lead gen.</p>
-                        <span class="text-[#097241] font-medium text-sm flex items-center gap-1">Apply Now <i class="fas fa-arrow-right action-arrow"></i></span>
-                    </div>
-                </div>
+                <div id="internGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </section>
         </main>
         
@@ -776,7 +722,99 @@
             // document.getElementById('currentYear').textContent = new Date().getFullYear();
             document.getElementById('currentYear').textContent = `© ${new Date().getFullYear()} ProVista Hub. All Rights Reserved.`;
         });
-        
+
+
+        //Intern card Home page
+        const internRoles = [
+            {
+            title: "Digital Marketing",
+            process: "Digital Marketing & Content",
+            iconClass: "fas fa-bullhorn",
+            iconBg: "bg-blue-100",
+            iconColor: "text-blue-600",
+            description: "Master SEO, Social Media strategies, and content analytics.",
+            type: "text"
+            },
+            {
+            title: "UI/UX & Design",
+            process: "UI/UX & Design",
+            iconClass: "fas fa-pen-nib",
+            iconBg: "bg-purple-100",
+            iconColor: "text-purple-600",
+            list: [
+                "User Interface Design",
+                "User Experience Research",
+                "Graphic Design (Branding)"
+            ],
+            type: "list"
+            },
+            {
+            title: "Backend Development",
+            process: "Backend Development",
+            iconClass: "fas fa-server",
+            iconBg: "bg-gray-100",
+            iconColor: "text-gray-600",
+            description: "Build robust APIs and server logic using Node.js, Python, PHP, or Django.",
+            type: "text"
+            },
+            {
+            title: "Content Creation",
+            process: "Content Creation",
+            iconClass: "fas fa-feather-alt",
+            iconBg: "bg-pink-100",
+            iconColor: "text-pink-600",
+            description: "Write engaging blogs, scripts, and technical documentation.",
+            type: "text"
+            },
+            {
+            title: "Marketing (Mgmt)",
+            process: "Marketing (BBA Focus)",
+            iconClass: "fas fa-chart-line",
+            iconBg: "bg-orange-100",
+            iconColor: "text-orange-600",
+            description: "Ideal for BBA students. Learn market research, sales strategies, and lead gen.",
+            type: "text"
+            }
+        ];
+        const container = document.getElementById("internGrid");
+
+        internRoles.forEach(role => {
+        const card = document.createElement("div");
+
+        card.className = "intern-card p-6 rounded-2xl cursor-pointer group";
+        card.onclick = () => startProcess(role.process);
+
+        let contentHTML = "";
+
+        if (role.type === "text") {
+            contentHTML = `<p class="text-sm text-gray-500 mb-4">${role.description}</p>`;
+        } else {
+            contentHTML = `
+            <ul class="text-sm text-gray-500 mb-4 space-y-1 list-disc list-inside">
+                ${role.list.map(item => `<li>${item}</li>`).join("")}
+            </ul>
+            `;
+        }
+
+        card.innerHTML = `
+            <div class="icon-box w-12 h-12 ${role.iconBg} rounded-full flex items-center justify-center mb-4 transition-colors">
+            <i class="${role.iconClass} ${role.iconColor} text-xl"></i>
+            </div>
+
+            <h3 class="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#097241] transition-colors">
+            ${role.title}
+            </h3>
+
+            ${contentHTML}
+
+            <span class="text-[#097241] font-medium text-sm flex items-center gap-1">
+            Apply Now <i class="fas fa-arrow-right action-arrow"></i>
+            </span>
+        `;
+
+        container.appendChild(card);
+        });
+
         // Start Process -> Moves to Eligibility
         window.startProcess = function(roleName) {
             window.appState.currentRole = roleName;
