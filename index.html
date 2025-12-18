@@ -299,7 +299,7 @@
         
         <footer class="bg-gray-100 text-gray-800 font-sans border-t border-gray-300">
             <div class="container mx-auto px-4 py-8 text-center">
-                <p class="text-sm text-gray-600">&copy; <span id="currentYear"></span> ProVista Hub. All Rights Reserved.</p>
+                <p class="text-sm text-gray-600" id="currentYear">&copy; 2026 ProVista Hub. All Rights Reserved.</p>
             </div>
         </footer>
     </div>
@@ -772,7 +772,10 @@
         };
 
         // --- HOME PAGE LOGIC ---
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        document.addEventListener("DOMContentLoaded", () => {
+            // document.getElementById('currentYear').textContent = new Date().getFullYear();
+            document.getElementById('currentYear').textContent = `© ${new Date().getFullYear()} ProVista Hub. All Rights Reserved.`;
+        });
         
         // Start Process -> Moves to Eligibility
         window.startProcess = function(roleName) {
